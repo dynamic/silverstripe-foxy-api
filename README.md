@@ -20,20 +20,20 @@ composer require dynamic/silverstripe-foxy-api ^1.0
 See [License](license.md)
 
 
-## Example configuration (optional)
+## Example configuration
 
-If your module makes use of the config API in SilverStripe it's a good idea to provide an example config
- here that will get the module working out of the box and expose the user to the possible configuration options.
+In the FoxyCart Admin, go to the [Integrations](https://admin.foxycart.com/admin.php?ThisAction=AddIntegration) area. Create a new token, and record the information provided.
 
-Provide a yaml code example where possible.
+Create a `foxy.yml` file in your project and enter the following information provided by your Foxy integration:
 
 ```yaml
 
-Page:
-  config_option: true
-  another_config:
-    - item1
-    - item2
+Dynamic\Foxy\API\APIClient:
+  enable_api: true
+  client_id: ''
+  client_secret: ''
+  access_token: ''
+  refresh_token: ''
   
 ```
 
