@@ -1,6 +1,6 @@
 <?php
 
-namespace Dynamic\Foxy\API;
+namespace Dynamic\Foxy\API\Client;
 
 use Dynamic\Foxy\Model\FoxyHelper;
 use Dynamic\Foxy\Model\Setting;
