@@ -3,11 +3,14 @@
 namespace Dynamic\Foxy\API;
 
 use Dynamic\Foxy\Model\FoxyHelper;
+use Dynamic\Foxy\Model\Setting;
 use Foxy\FoxyClient\FoxyClient;
 use GuzzleHttp\Client;
+use Psr\Log\LoggerInterface;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
+use SilverStripe\Core\Injector\Injector;
 
 class APIClient
 {
@@ -59,13 +62,11 @@ class APIClient
             'use_sandbox' => false,
         ];
 
-        if ($setting = FoxyStripeSetting::current_foxystripe_setting()) {
-            $config['client_id'] = $this->config()->get('client_id');
-            $config['client_secret'] = $this->config()->get('client_secret');
-            $config['refresh_token'] = $this->config()->get('refresh_token');
-            $config['access_token'] = $this->config()->get('access_token');
-            $config['access_token_expires'] = 7200;
-        }
+        $config['client_id'] = $this->config()->get('client_id');
+        $config['client_secret'] = $this->config()->get('client_secret');
+        $config['refresh_token'] = $this->config()->get('refresh_token');
+        $config['access_token'] = $this->config()->get('access_token');
+        $config['access_token_expires'] = 7200;
 
         $guzzle_config = [
             'defaults' => [
@@ -110,11 +111,11 @@ class APIClient
     {
         $helper = FoxyHelper::create();
 
-        return $helper->config()->get('enable_api') &&
-            $helper->config()->get('client_id') &&
-            $helper->config()->get('client_secret') &&
-            $helper->config()->get('refresh_token') &&
-            $helper->config()->get('access_token');
+        return self::config()->get('enable_api') &&
+            self::config()->get('client_id') &&
+            self::config()->get('client_secret') &&
+            self::config()->get('refresh_token') &&
+            self::config()->get('access_token');
     }
 
     /**
