@@ -28,7 +28,7 @@ Create a `foxy.yml` file in your project and enter the following information pro
 
 ```yaml
 
-Dynamic\Foxy\API\APIClient:
+Dynamic\Foxy\API\Client\APIClient:
   enable_api: true
   client_id: ''
   client_secret: ''
