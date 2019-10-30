@@ -2,6 +2,17 @@
 
 An addon module for SilverStripe Foxy that adds API functionality with Foxy.io
 
+[![Build Status](https://travis-ci.org/dynamic/silverstripe-foxy-api.svg?branch=master)](https://travis-ci.org/dynamic/silverstripe-foxy-api)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/badges/build.png?b=master)](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/build-status/master)
+[![codecov](https://codecov.io/gh/dynamic/silverstripe-foxy-api/branch/master/graph/badge.svg)](https://codecov.io/gh/dynamic/silverstripe-foxy-api)
+
+[![Latest Stable Version](https://poser.pugx.org/dynamic/silverstripe-foxy-api/v/stable)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
+[![Total Downloads](https://poser.pugx.org/dynamic/silverstripe-foxy-api/downloads)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
+[![Latest Unstable Version](https://poser.pugx.org/dynamic/silverstripe-foxy-api/v/unstable)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
+[![License](https://poser.pugx.org/dynamic/silverstripe-foxy-api/license)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
+
+
 ## Requirements
 
 * SilverStripe ^4.0
