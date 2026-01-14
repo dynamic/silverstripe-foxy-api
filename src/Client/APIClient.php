@@ -3,11 +3,11 @@
 namespace Dynamic\Foxy\API\Client;
 
 use Dynamic\Foxy\Model\FoxyHelper;
-use Dynamic\Foxy\Model\Setting;
 use Foxy\FoxyClient\FoxyClient;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use SilverStripe\Core\Config\Configurable;
+use SilverStripe\Core\Environment;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
 use SilverStripe\Core\Injector\Injector;
@@ -18,54 +18,31 @@ class APIClient
     use Injectable;
     use Extensible;
 
-    /**
-     * @var
-     */
-    private static $enable_api;
+    private static bool $enable_api = false;
 
-    /**
-     * @var
-     */
-    private static $client_id;
+    private static ?string $client_id = null;
 
-    /**
-     * @var
-     */
-    private static $client_secret;
+    private static ?string $client_secret = null;
 
-    /**
-     * @var
-     */
-    private static $access_token;
+    private static ?string $access_token = null;
 
-    /**
-     * @var
-     */
-    private static $refresh_token;
+    private static ?string $refresh_token = null;
 
-    /**
-     * @var
-     */
-    private $client;
+    private ?FoxyClient $client = null;
 
-    /**
-     * @var
-     */
-    private $current_store;
+    private ?string $current_store = null;
 
-    /**
-     * APIClient constructor.
-     */
     public function __construct()
     {
         $config = [
             'use_sandbox' => false,
         ];
 
-        $config['client_id'] = $this->config()->get('client_id');
-        $config['client_secret'] = $this->config()->get('client_secret');
-        $config['refresh_token'] = $this->config()->get('refresh_token');
-        $config['access_token'] = $this->config()->get('access_token');
+        // Load credentials from environment variables first, fall back to YAML config
+        $config['client_id'] = $this->getCredential('client_id', 'FOXY_API_CLIENT_ID');
+        $config['client_secret'] = $this->getCredential('client_secret', 'FOXY_API_CLIENT_SECRET');
+        $config['access_token'] = $this->getCredential('access_token', 'FOXY_API_ACCESS_TOKEN');
+        $config['refresh_token'] = $this->getCredential('refresh_token', 'FOXY_API_REFRESH_TOKEN');
         $config['access_token_expires'] = 7200;
 
         $guzzle_config = [
@@ -84,52 +61,54 @@ class APIClient
     }
 
     /**
-     * @return mixed
+     * Get a credential value, checking environment variable first, then YAML config.
      */
-    public function getClient()
+    private function getCredential(string $configKey, string $envKey): ?string
+    {
+        // Environment variable takes precedence
+        $value = Environment::getEnv($envKey);
+        if ($value) {
+            return $value;
+        }
+
+        // Fall back to YAML config
+        return $this->config()->get($configKey);
+    }
+
+    public function getClient(): ?FoxyClient
     {
         return $this->client;
     }
 
-    /**
-     * @param $client
-     *
-     * @return $this
-     */
-    public function setClient($client)
+    public function setClient(FoxyClient $client): self
     {
         $this->client = $client;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     * @throws \SilverStripe\ORM\ValidationException
-     */
-    public static function is_valid()
+    public static function is_valid(): bool
     {
-        $helper = FoxyHelper::create();
+        $hasClientId = Environment::getEnv('FOXY_API_CLIENT_ID') ?: self::config()->get('client_id');
+        $hasClientSecret = Environment::getEnv('FOXY_API_CLIENT_SECRET') ?: self::config()->get('client_secret');
+        $hasAccessToken = Environment::getEnv('FOXY_API_ACCESS_TOKEN') ?: self::config()->get('access_token');
+        $hasRefreshToken = Environment::getEnv('FOXY_API_REFRESH_TOKEN') ?: self::config()->get('refresh_token');
 
-        return self::config()->get('enable_api') &&
-            self::config()->get('client_id') &&
-            self::config()->get('client_secret') &&
-            self::config()->get('refresh_token') &&
-            self::config()->get('access_token');
+        return (bool) (
+            self::config()->get('enable_api') &&
+            $hasClientId &&
+            $hasClientSecret &&
+            $hasRefreshToken &&
+            $hasAccessToken
+        );
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCurrentStore()
+    public function getCurrentStore(): ?string
     {
         return $this->current_store;
     }
 
-    /**
-     * @throws \SilverStripe\ORM\ValidationException
-     */
-    public function setCurrentStore()
+    public function setCurrentStore(): void
     {
         $client = $this->getClient();
         $helper = FoxyHelper::create();
@@ -164,3 +143,4 @@ class APIClient
         }
     }
 }
+

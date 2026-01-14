@@ -2,27 +2,20 @@
 
 An addon module for SilverStripe Foxy that adds API functionality with Foxy.io
 
-[![Build Status](https://travis-ci.org/dynamic/silverstripe-foxy-api.svg?branch=master)](https://travis-ci.org/dynamic/silverstripe-foxy-api)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/badges/build.png?b=master)](https://scrutinizer-ci.com/g/dynamic/silverstripe-foxy-api/build-status/master)
-[![codecov](https://codecov.io/gh/dynamic/silverstripe-foxy-api/branch/master/graph/badge.svg)](https://codecov.io/gh/dynamic/silverstripe-foxy-api)
-
 [![Latest Stable Version](https://poser.pugx.org/dynamic/silverstripe-foxy-api/v/stable)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
 [![Total Downloads](https://poser.pugx.org/dynamic/silverstripe-foxy-api/downloads)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
-[![Latest Unstable Version](https://poser.pugx.org/dynamic/silverstripe-foxy-api/v/unstable)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
 [![License](https://poser.pugx.org/dynamic/silverstripe-foxy-api/license)](https://packagist.org/packages/dynamic/silverstripe-foxy-api)
-
 
 ## Requirements
 
-* SilverStripe ^4.0
-* dynamic/silverstripe-foxy ^1.0
+* PHP ^8.1
+* SilverStripe CMS ^5.0
+* dynamic/silverstripe-foxy ^3.0
 
 ## Installation
- 
 
-```
-composer require dynamic/silverstripe-foxy-api ^1.0
+```bash
+composer require dynamic/silverstripe-foxy-api ^2.0
 ```
 
 
@@ -31,21 +24,37 @@ composer require dynamic/silverstripe-foxy-api ^1.0
 See [License](license.md)
 
 
-## Example configuration
+## Configuration
 
-In the FoxyCart Admin, go to the [Integrations](https://admin.foxycart.com/admin.php?ThisAction=AddIntegration) area. Create a new token, and record the information provided.
+### Using Environment Variables (Recommended)
 
-Create a `foxy.yml` file in your project and enter the following information provided by your Foxy integration:
+Add these variables to your `.env` file. You can obtain these from your Foxy admin by creating a **Private Integration** at [Foxy Integrations](https://admin.foxy.io/admin.php?ThisAction=AddIntegration):
+
+```bash
+FOXY_API_CLIENT_ID="your-client-id"
+FOXY_API_CLIENT_SECRET="your-client-secret"
+FOXY_API_ACCESS_TOKEN="your-access-token"
+FOXY_API_REFRESH_TOKEN="your-refresh-token"
+```
+
+Then enable the API in your project's YAML config:
 
 ```yaml
-
 Dynamic\Foxy\API\Client\APIClient:
   enable_api: true
-  client_id: ''
-  client_secret: ''
-  access_token: ''
-  refresh_token: ''
-  
+```
+
+### Alternative: Full YAML Configuration
+
+If you prefer to keep credentials in YAML (not recommended for production):
+
+```yaml
+Dynamic\Foxy\API\Client\APIClient:
+  enable_api: true
+  client_id: 'your-client-id'
+  client_secret: 'your-client-secret'
+  access_token: 'your-access-token'
+  refresh_token: 'your-refresh-token'
 ```
 
 ## Maintainers
